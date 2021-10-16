@@ -2,8 +2,9 @@ package com.company;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class MainClass {
+public class MainClass{
 
     public static void main(String[] args) {
         List<String> names = Arrays.asList("Jack", "Connor", "Harry", "George", "Samuel", "John");
@@ -21,28 +22,26 @@ public class MainClass {
         Long lessThen18 = persons.stream().filter(x -> x.getAge() < 18).count();
         System.out.println(lessThen18);
 
-        List<String> list = persons.stream()
-                .filter(x-> (x.getAge()>=18) && (x.getAge()<=27))
+        List<String> from18To27 = persons.stream()
+                .filter(x-> (x.getAge()>=18) && (x.getAge()<27))
                 .map(Person::getFamily)
                 .collect(Collectors.toList());
-        System.out.println(list);
+        System.out.println(from18To27);
 
-        List<Person> manPersons = persons.stream()
-                .filter(s-> s.getSex() == Sex.MAN)
-                .filter(c -> c.getAge()>=18 && c.getAge()<=65)
+
+        List<Person> from18To65 = persons.stream()
+                .filter(s-> s.getSex() == Sex.MAN && s.getAge()>=18 && s.getAge()<65)
                 .filter(c -> c.getEducation() == Education.HIGHER)
                 .sorted(Comparator.comparing(Person::getFamily))
                 .collect(Collectors.toList());
 
-        System.out.println(manPersons);
-
-        List<Person> womanPersons = persons.stream()
-                .filter(s-> s.getSex() == Sex.WOMAN)
-                .filter(c -> c.getAge()>=18 && c.getAge()<=60)
+        List<Person> from18To60 = persons.stream()
+                .filter(s-> s.getSex() == Sex.WOMAN && s.getAge()>=18 && s.getAge()<60)
                 .filter(c -> c.getEducation() == Education.HIGHER)
                 .sorted(Comparator.comparing(Person::getFamily))
                 .collect(Collectors.toList());
 
-        System.out.println(womanPersons);
+        List<Person> newPersonList = Stream.concat(from18To65.stream(), from18To60.stream()).collect(Collectors.toList());
+        System.out.println(newPersonList);
     }
 }
